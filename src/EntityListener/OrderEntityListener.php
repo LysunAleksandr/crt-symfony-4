@@ -30,7 +30,9 @@ class OrderEntityListener
             $order->setClientContact($clientContact);
  //           $this->entityManager->flush();
         }
-
+        else {
+            $order->setClientContact($client);
+        }
     }
 
     public function preUpdate(Order $order, LifecycleEventArgs $event)
