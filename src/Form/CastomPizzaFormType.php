@@ -16,7 +16,7 @@ class CastomPizzaFormType extends AbstractType
     {
         $builder
             ->add('title', null, [
-                'label' => 'Name of your pizza',
+                'label' => 'Name of your pizza', 'data' => 'pizza 1'
             ])
             ->add('Ingr', null, [
                 'label' => 'Add ingridients',

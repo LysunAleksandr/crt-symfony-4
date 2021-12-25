@@ -25,7 +25,6 @@ class CustomMaker implements CustomMakerInterface
         $basketPosition->setTitle($catalog->getTitle());
         $basketPosition->setPrice(1000);
         $basketPosition->setQuantity($quantity);
-
         $ingridients = $catalog->getIngr();
 
         $i = 0;

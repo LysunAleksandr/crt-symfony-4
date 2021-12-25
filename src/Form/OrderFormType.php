@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Order;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,8 +22,8 @@ class OrderFormType extends AbstractType
             ->add('adress', null, [
                 'label' => 'Delivery address  ',
             ])
-            ->add('telehhone', null, [
-                'label' => 'Telephone  ',
+            ->add('telehhone', TelType::class, [
+                'label' => 'Telephone  ', 'data' => '+79'
             ])
             ->add('submit', SubmitType::class)
         ;
