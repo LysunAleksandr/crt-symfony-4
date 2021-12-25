@@ -42,11 +42,13 @@ class OrderController extends AbstractController
          $offset = max(0, $request->query->getInt('offset', 0));
 
          $order = new Order();
+         $order->setSessionID($sessionId);
          $form = $this->createForm(OrderFormType::class, $order);
          $form->handleRequest($request);
 
          if ($form->isSubmitted() && $form->isValid()) {
              $order->setCreatedAtValue();
+
              $basketPositions = $basketPositionRepository->findBy(['sessionID' => $sessionId ]);
              foreach ($basketPositions  as $basketPosition) {
                  $order->addBasketposition($basketPosition);
@@ -86,7 +88,7 @@ class OrderController extends AbstractController
     public function show(Request $request, Order $order, BasketPositionRepository $basketPositionRepository, BasketCalcInterface $basketCalculator): Response
     {
 
-        $sessionId = $request->getSession()->getId();
+        $sessionId = $order->getSessionID();
         $offset = max(0, $request->query->getInt('offset', 0));
 
         $paginator = $basketPositionRepository->getBasketPaginator($offset, $sessionId);

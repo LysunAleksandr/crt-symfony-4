@@ -50,6 +50,11 @@ class Order
      */
     private $clientContact;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sessionID;
+
     public function __construct()
     {
         $this->basketposition = new ArrayCollection();
@@ -159,6 +164,18 @@ class Order
     public function setClientContact(?ClientContact $clientContact): self
     {
         $this->clientContact = $clientContact;
+
+        return $this;
+    }
+
+    public function getSessionID(): ?string
+    {
+        return $this->sessionID;
+    }
+
+    public function setSessionID(string $sessionID): self
+    {
+        $this->sessionID = $sessionID;
 
         return $this;
     }
