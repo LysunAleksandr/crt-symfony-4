@@ -30,24 +30,31 @@ class CastomPizzaController extends AbstractController
     public function index(Request $request, BasketCalcInterface $basketCalculator, CustomMakerInterface $customMakerInterface ): Response
     {
         $sessionId = $request->getSession()->getId();
-
+        $validateError = '';
         $catalog = new Catalog();
         $form = $this->createForm(CastomPizzaFormType::class, $catalog);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $quantity = $form->get('Quantity')->getData();
+                $basketPosition = $customMakerInterface->getBasketCastom($catalog,$sessionId,$quantity);
+                $this->entityManager->persist($basketPosition);
+                $this->entityManager->flush();
 
-            $quantity = $form->get('Quantity')->getData();
-            $basketPosition = $customMakerInterface->getBasketCastom($catalog,$sessionId,$quantity);
-            $this->entityManager->persist($basketPosition);
-            $this->entityManager->flush();
+                return $this->redirectToRoute('homepage');
 
-            return $this->redirectToRoute('homepage');
+            }
+            catch ( \Exception $e) {
+                $validateError = 'Error : input fields cannot be empty ';
+            }
+
         }
 
 
         return $this->render('castom_pizza/index.html.twig', [
             'controller_name' => 'CastomPizzaController',
-            'add_form' => $form->createView()
+            'add_form' => $form->createView(),
+            'validate_error' => $validateError
         ]);
     }
 }
