@@ -45,7 +45,7 @@ class CastomPizzaController extends AbstractController
 
             }
             catch ( \Exception $e) {
-                $validateError = 'Error : input fields cannot be empty ';
+                $validateError = $e->getMessage(); //   'Error : input fields cannot be empty ';
             }
 
         }
