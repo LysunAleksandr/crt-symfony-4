@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class BasketPositionRepository extends ServiceEntityRepository
 {
-    public const PAGINATOR_PER_PAGE = 2;
+    public const PAGINATOR_PER_PAGE = 8;
 
     public function __construct(ManagerRegistry $registry)
     {
