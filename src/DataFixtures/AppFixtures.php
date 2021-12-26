@@ -60,8 +60,8 @@ class AppFixtures extends Fixture
         $catalog1->setPrice(800);
         $catalog1->setDescription('Margarita description');
         $catalog1->setPhotoFilename('margarita.jpg');
-        $catalog->addIngr($ingridient3);
-        $catalog->addIngr($ingridient4);
+        $catalog1->addIngr($ingridient3);
+        $catalog1->addIngr($ingridient4);
         $manager->persist($catalog1);
 
         $catalog2 = new Catalog();
@@ -69,8 +69,8 @@ class AppFixtures extends Fixture
         $catalog2->setPrice(900);
         $catalog2->setDescription('Peperoni description');
         $catalog2->setPhotoFilename('peper.jpg');
-        $catalog->addIngr($ingridient4);
-        $catalog->addIngr($ingridient5);
+        $catalog2->addIngr($ingridient4);
+        $catalog2->addIngr($ingridient5);
         $manager->persist($catalog2);
 
         $basket_pos = new BasketPosition();
