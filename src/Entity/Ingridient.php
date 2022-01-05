@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\IngridientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=IngridientRepository::class)
  */
+#[ApiResource]
 class Ingridient
 {
     /**

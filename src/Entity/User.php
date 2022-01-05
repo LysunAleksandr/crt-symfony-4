@@ -6,11 +6,22 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use ApiPlatform\Core\Annotation\ApiResource;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
+#[ApiResource (
+   attributes: ["security" => "is_granted('ROLE_ADMIN')"],
+   collectionOperations: [
+    "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+    "post" => ["security" => "is_granted('ROLE_ADMIN')"],
+   ],
+   itemOperations: [
+    "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+    "delete" => ["security" => "is_granted('ROLE_ADMIN')"],
+   ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -18,11 +29,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Assert\NotBlank]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
+    #[Assert\NotBlank]
     private $username;
 
     /**
@@ -34,6 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
+    #[Assert\NotBlank]
     private $password;
 
     public function getId(): ?int
