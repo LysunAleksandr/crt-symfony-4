@@ -6,10 +6,25 @@ use App\Repository\BasketPositionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass=BasketPositionRepository::class)
  */
+
+#[ApiResource (
+   attributes: ["security" => "is_granted('ROLE_USER')"],
+   collectionOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "post" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+   itemOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "delete" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+)]
+
 class BasketPosition
 {
     /**
@@ -17,11 +32,13 @@ class BasketPosition
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private $sessionID;
 
     /**
@@ -47,6 +64,7 @@ class BasketPosition
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="basketposition")
      */
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private $orderN;
 
     /**

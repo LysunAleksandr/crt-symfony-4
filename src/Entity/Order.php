@@ -6,11 +6,28 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  */
+#[ApiResource (
+   attributes: ["security" => "is_granted('ROLE_USER')"],
+   collectionOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "post" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+   itemOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "delete" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+   normalizationContext: ['groups' => ['read']],
+   denormalizationContext: ['groups' => ['write']],
+)]
+
 class Order
 {
     /**
@@ -18,41 +35,49 @@ class Order
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["read", "write"])]
     private $id;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
+    #[Groups(["read", "write"])]
     private $date_at;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read", "write"])]
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read", "write"])]
     private $adress;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read", "write"])]
     private $telehhone;
 
     /**
      * @ORM\OneToMany(targetEntity=BasketPosition::class, mappedBy="orderN")
      */
+    #[Groups(["read", "write"])]
     private $basketposition;
 
     /**
      * @ORM\ManyToOne(targetEntity=ClientContact::class, inversedBy="OrderId")
      */
+    #[Groups(["read"])]
     private $clientContact;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private $sessionID;
 
     public function __construct()

@@ -40,5 +40,7 @@ security:
 
 
     access_control:
+        - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: [ROLE_ADMIN] }
+ #       - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

@@ -11,7 +11,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ORM\Entity(repositoryClass=CatalogRepository::class)
  */
 #[ApiResource (
-   attributes: ["security" => "is_granted('ROLE_ADMIN')"],
    collectionOperations: [
     "get",
     "post" => ["security" => "is_granted('ROLE_ADMIN')"],

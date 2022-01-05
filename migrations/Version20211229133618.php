@@ -27,7 +27,6 @@ final class Version20211229133618 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP INDEX UNIQ_8D93D6497BA2F5EB');
         $this->addSql('ALTER TABLE "user" DROP api_token');
     }

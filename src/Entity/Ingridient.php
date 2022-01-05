@@ -9,7 +9,17 @@ use ApiPlatform\Core\Annotation\ApiResource;
 /**
  * @ORM\Entity(repositoryClass=IngridientRepository::class)
  */
-#[ApiResource]
+#[ApiResource (
+   attributes: ["security" => "is_granted('ROLE_ADMIN')"],
+   collectionOperations: [
+    "get",
+    "post" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ],
+   itemOperations: [
+    "get",
+    "delete" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ],
+)]
 class Ingridient
 {
     /**
