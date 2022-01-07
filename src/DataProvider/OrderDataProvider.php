@@ -1,51 +1,49 @@
 <?php
 
-
 namespace App\DataProvider;
-
 
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\BasketPosition;
-use App\Repository\BasketPositionRepository;
+use App\Entity\Order;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class BasketPositionDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
+class OrderDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
     private $entityManager;
-    private $basketPositionRepository;
+    private $orderRepository;
     private $user;
 
-    public function __construct(EntityManagerInterface $entityManager, BasketPositionRepository $basketPositionRepository,TokenStorageInterface $tokenStorage)
+    public function __construct(EntityManagerInterface $entityManager, OrderRepository $orderRepository,TokenStorageInterface $tokenStorage)
     {
         $this->entityManager = $entityManager;
-        $this->basketPositionRepository = $basketPositionRepository;
+        $this->orderRepository = $orderRepository;
         $this->user = $tokenStorage->getToken()->getUser()->getUserIdentifier();
 
     }
+
     /**
      * @param array<string, mixed> $context
      *
      * @throws \RuntimeException
      *
-     * @return iterable<BasketPosition>
+     * @return iterable<Order>
      */
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         try {
-            $collection = $this->basketPositionRepository->findBy(['sessionID' => $this->user, 'orderN' => null ]);
+            $collection = $this->orderRepository->findBy(['sessionID' => $this->user ]);
         } catch (\Exception $e) {
-            throw new \RuntimeException(sprintf('Unable to retrieve basket from external source: %s', $e->getMessage()));
+            throw new \RuntimeException(sprintf('Unable to retrieve orders from external source: %s', $e->getMessage()));
         }
 
 
-            return $collection;
-
+        return $collection;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return BasketPosition::class === $resourceClass;
+        return Order::class === $resourceClass;
     }
 }

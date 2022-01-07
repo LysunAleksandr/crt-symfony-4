@@ -71,14 +71,12 @@ class Order
     /**
      * @ORM\ManyToOne(targetEntity=ClientContact::class, inversedBy="OrderId")
      */
-    #[Groups(["read"])]
     private $clientContact;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
-    #[Groups(["read", "write"])]
+    #[Groups(["read"])]
     private $sessionID;
 
     public function __construct()

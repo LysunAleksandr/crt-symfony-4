@@ -19,13 +19,13 @@ class OrderDataPersister implements DataPersisterInterface
 
     private $entityManager;
     private $basketPositionRepository;
-    private $tokenInterface;
+    private $user;
 
     public function __construct(EntityManagerInterface $entityManager, BasketPositionRepository $basketPositionRepository, TokenStorageInterface $tokenStorage)
     {
         $this->entityManager = $entityManager;
         $this->basketPositionRepository = $basketPositionRepository;
-        $this->tokenInterface = $tokenStorage->getToken();
+        $this->user = $tokenStorage->getToken()->getUser()->getUserIdentifier();
 
    }
 
@@ -38,8 +38,8 @@ class OrderDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-        $sessionId = $data->getSessionID();
-        $basketPositions = $this->basketPositionRepository->findBy(['sessionID' => $sessionId, 'orderN' => null ]);
+        $data->setSessionID($this->user);
+        $basketPositions = $this->basketPositionRepository->findBy(['sessionID' => $this->user, 'orderN' => null ]);
         foreach ($basketPositions  as $basketPosition) {
             $data->addBasketposition($basketPosition);
         }
