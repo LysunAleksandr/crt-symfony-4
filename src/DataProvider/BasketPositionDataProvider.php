@@ -15,13 +15,14 @@ class BasketPositionDataProvider implements ContextAwareCollectionDataProviderIn
 {
     private $entityManager;
     private $basketPositionRepository;
+    private $token;
     private $user;
 
     public function __construct(EntityManagerInterface $entityManager, BasketPositionRepository $basketPositionRepository,TokenStorageInterface $tokenStorage)
     {
         $this->entityManager = $entityManager;
         $this->basketPositionRepository = $basketPositionRepository;
-        $this->user = $tokenStorage->getToken()->getUser()->getUserIdentifier();
+        $this->token=$tokenStorage->getToken();
 
     }
     /**
@@ -34,12 +35,11 @@ class BasketPositionDataProvider implements ContextAwareCollectionDataProviderIn
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         try {
+            $this->user = $this->token->getUser()->getUserIdentifier();
             $collection = $this->basketPositionRepository->findBy(['sessionID' => $this->user, 'orderN' => null ]);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Unable to retrieve basket from external source: %s', $e->getMessage()));
         }
-
-
             return $collection;
 
     }

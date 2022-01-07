@@ -13,14 +13,14 @@ class OrderDataProvider implements ContextAwareCollectionDataProviderInterface, 
 {
     private $entityManager;
     private $orderRepository;
+    private $token;
     private $user;
 
     public function __construct(EntityManagerInterface $entityManager, OrderRepository $orderRepository,TokenStorageInterface $tokenStorage)
     {
         $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
-        $this->user = $tokenStorage->getToken()->getUser()->getUserIdentifier();
-
+        $this->token=$tokenStorage->getToken();
     }
 
     /**
@@ -33,6 +33,7 @@ class OrderDataProvider implements ContextAwareCollectionDataProviderInterface, 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         try {
+            $this->user = $this->token->getUser()->getUserIdentifier();
             $collection = $this->orderRepository->findBy(['sessionID' => $this->user ]);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Unable to retrieve orders from external source: %s', $e->getMessage()));
