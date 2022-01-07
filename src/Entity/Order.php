@@ -65,7 +65,7 @@ class Order
     /**
      * @ORM\OneToMany(targetEntity=BasketPosition::class, mappedBy="orderN")
      */
-    #[Groups(["read", "write"])]
+    #[Groups(["read"])]
     private $basketposition;
 
     /**
@@ -78,6 +78,7 @@ class Order
      * @ORM\Column(type="string", length=255)
      */
     #[ApiFilter(SearchFilter::class, strategy: 'exact')]
+    #[Groups(["read", "write"])]
     private $sessionID;
 
     public function __construct()

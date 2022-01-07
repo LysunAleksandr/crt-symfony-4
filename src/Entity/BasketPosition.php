@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=BasketPositionRepository::class)
  */
@@ -23,6 +24,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
     "get" => ["security" => "is_granted('ROLE_USER')"],
     "delete" => ["security" => "is_granted('ROLE_USER')"],
     ],
+    denormalizationContext: ['groups' => ['write']],
 )]
 
 class BasketPosition
@@ -32,44 +34,50 @@ class BasketPosition
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private $sessionID;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["write"])]
     private $title;
 
     /**
      * @ORM\Column(type="integer")
      */
+    #[Groups(["write"])]
     private $quantity;
 
     /**
      * @ORM\Column(type="float")
      */
+    #[Groups(["write"])]
     private $price;
 
     /**
      * @ORM\ManyToOne(targetEntity=Catalog::class, inversedBy="Ð¸ÑbasketPosition")
      */
+
+    #[ApiSubresource(maxDepth: 1,)]
     private $catalog;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="basketposition")
      */
-    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
+
+    #[ApiSubresource(maxDepth: 1,)]
     private $orderN;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ingridient::class)
      */
+    #[Groups(["write"])]
+    #[ApiSubresource(maxDepth: 1,)]
     private $Ingr;
 
     public function __construct()
