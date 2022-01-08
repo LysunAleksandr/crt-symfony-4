@@ -79,8 +79,8 @@ class AppFixtures extends Fixture
         $basket_pos->setQuantity(2);
         $basket_pos->setCatalog($catalog1);
         $basket_pos->setSessionID('admin');
-        $catalog->addIngr($ingridient3);
-        $catalog->addIngr($ingridient4);
+        $basket_pos->addIngr($ingridient3);
+        $basket_pos->addIngr($ingridient4);
         $manager->persist($basket_pos);
 
         $basket_pos1 = new BasketPosition();
@@ -89,8 +89,8 @@ class AppFixtures extends Fixture
         $basket_pos1->setQuantity(2);
         $basket_pos1->setCatalog($catalog1);
         $basket_pos1->setSessionID('admin');
-        $catalog->addIngr($ingridient4);
-        $catalog->addIngr($ingridient5);
+        $basket_pos1->addIngr($ingridient4);
+        $basket_pos1->addIngr($ingridient5);
         $manager->persist($basket_pos1);
 
         $manager->flush();
