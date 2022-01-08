@@ -14,7 +14,6 @@ services:
         bind:
 #            $photoDir: "%kernel.project_dir%/public/uploads/photos"
             $adminEmail: "%env(string:default:default_admin_email:ADMIN_EMAIL)%"
-
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     'App\DataProvider\BasketPositionDataProvider':
@@ -25,6 +24,9 @@ services:
         tags: [ { name: 'api_platform.collection_data_provider', priority: 2 } ]
         # Autoconfiguration must be disabled to set a custom priority
         autoconfigure: false
+    App\Swagger\JwtDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@.inner']
     App\:
         resource: '../src/'
         exclude:
@@ -32,11 +34,6 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-            - '../src/Swagger/'
-    App\Swagger\SwaggerDecorator:
-        decorates: 'api_platform.swagger.normalizer.documentation'
-        arguments: ['@App\Swagger\SwaggerDecorator.inner']
-        autoconfigure: false
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\EntityListener\OrderEntityListener:
