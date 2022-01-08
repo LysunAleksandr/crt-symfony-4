@@ -5,6 +5,7 @@ namespace App\DataPersister;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use App\Entity\Order;
 use App\Entity\User;
+use App\Exception\BasketPositionNotFoundException;
 use App\Repository\BasketPositionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\String_;
@@ -50,9 +51,11 @@ class OrderDataPersister implements DataPersisterInterface
             $this->entityManager->flush();
         }
         else {
-            return new JsonResponse(['id'=>0,
+            throw new BasketPositionNotFoundException('Basket is empty');
+ /*           return new JsonResponse(['id'=>0,
                                     'sessionid'=> $data->getSessionID(),
                                     'response'=>'Basket is empty']);
+ */
         }
     }
 
