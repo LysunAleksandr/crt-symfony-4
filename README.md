@@ -16,6 +16,10 @@ docker-compose exec app  bin/console doctrine:migrations:migrate
 
 docker-compose exec app  bin/console --env=dev doctrine:fixtures:load
 
+#to Generate the SSL keys:
+
+docker-compose exec app bin/console lexik:jwt:generate-keypair
+
 #login admin
 
 admin/admin
