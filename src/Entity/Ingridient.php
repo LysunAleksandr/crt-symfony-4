@@ -10,7 +10,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ORM\Entity(repositoryClass=IngridientRepository::class)
  */
 #[ApiResource (
-   attributes: ["security" => "is_granted('ROLE_ADMIN')"],
    collectionOperations: [
     "get",
     "post" => ["security" => "is_granted('ROLE_ADMIN')"],
@@ -27,12 +26,12 @@ class Ingridient
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     public function getId(): ?int
     {

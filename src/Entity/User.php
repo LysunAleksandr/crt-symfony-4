@@ -30,25 +30,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      */
     #[Assert\NotBlank]
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
     #[Assert\NotBlank]
-    private $username;
+    private ?string $username;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     #[Assert\NotBlank]
-    private $password;
+    private ?string $password;
 
     public function getId(): ?int
     {

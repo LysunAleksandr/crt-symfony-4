@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\BasketPositionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\String_;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -40,12 +41,19 @@ class OrderDataPersister implements DataPersisterInterface
     {
         $data->setSessionID($this->user);
         $basketPositions = $this->basketPositionRepository->findBy(['sessionID' => $this->user, 'orderN' => null ]);
-        foreach ($basketPositions  as $basketPosition) {
-            $data->addBasketposition($basketPosition);
+        if ($basketPositions){
+            foreach ($basketPositions  as $basketPosition) {
+                $data->addBasketposition($basketPosition);
+            }
+            $data->setCreatedAtValue();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
         }
-        $data->setCreatedAtValue();
-        $this->entityManager->persist($data);
-        $this->entityManager->flush();
+        else {
+            return new JsonResponse(['id'=>0,
+                                    'sessionid'=> $data->getSessionID(),
+                                    'response'=>'Basket is empty']);
+        }
     }
 
     public function remove($data)

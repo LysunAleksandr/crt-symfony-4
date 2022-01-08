@@ -34,51 +34,51 @@ class BasketPosition
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $sessionID;
+    private ?string $sessionID;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["write"])]
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="integer")
      */
     #[Groups(["write"])]
-    private $quantity;
+    private ?int $quantity;
 
     /**
      * @ORM\Column(type="float")
      */
     #[Groups(["write"])]
-    private $price;
+    private ?float $price;
 
     /**
      * @ORM\ManyToOne(targetEntity=Catalog::class, inversedBy="Ð¸ÑbasketPosition")
      */
 
     #[ApiSubresource(maxDepth: 1,)]
-    private $catalog;
+    private ?Catalog $catalog;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="basketposition")
      */
 
     #[ApiSubresource(maxDepth: 1,)]
-    private $orderN;
+    private ?Order $orderN;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ingridient::class)
      */
     #[Groups(["write"])]
     #[ApiSubresource(maxDepth: 1,)]
-    private $Ingr;
+    private  $Ingr;
 
     public function __construct()
     {

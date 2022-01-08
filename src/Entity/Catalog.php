@@ -31,21 +31,21 @@ class Catalog
      * @ORM\Column(type="integer")
      */
     #[Assert\NotBlank]
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Assert\NotBlank]
     #[Groups(["write"])]
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="float")
      */
     #[Assert\NotBlank]
     #[Groups(["write"])]
-    private $price;
+    private ?float $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -57,14 +57,14 @@ class Catalog
      * @ORM\Column(type="text")
      */
     #[Groups(["write"])]
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ingridient::class)
      */
     #[Groups(["write"])]
     #[ApiSubresource(maxDepth: 1,)]
-    private $Ingr;
+    private  $Ingr;
 
 
 

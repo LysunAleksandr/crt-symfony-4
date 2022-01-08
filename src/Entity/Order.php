@@ -36,31 +36,31 @@ class Order
      * @ORM\Column(type="integer")
      */
     #[Groups(["read", "write"])]
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
     #[Groups(["read", "write"])]
-    private $date_at;
+    private  $date_at;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read", "write"])]
-    private $username;
+    private ?string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read", "write"])]
-    private $adress;
+    private ?string $adress;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read", "write"])]
-    private $telehhone;
+    private ?string $telehhone;
 
     /**
      * @ORM\OneToMany(targetEntity=BasketPosition::class, mappedBy="orderN")
@@ -77,7 +77,7 @@ class Order
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read"])]
-    private $sessionID;
+    private ?string $sessionID;
 
     public function __construct()
     {
@@ -170,9 +170,11 @@ class Order
     /**
      * @ORM\PrePersist
      */
-    public function setCreatedAtValue()
+    public function setCreatedAtValue(): self
     {
         $this->date_at = new \DateTimeImmutable();
+
+        return $this;
     }
 
     public function __toString(): string
