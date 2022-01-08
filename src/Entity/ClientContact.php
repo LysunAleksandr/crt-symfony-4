@@ -17,27 +17,27 @@ class ClientContact
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $telephone;
+    private ?string $telephone;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $adress;
+    private ?string $adress;
 
     /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="clientContact")
      */
-    private $OrderId;
+    private  $OrderId;
 
     public function __construct()
     {

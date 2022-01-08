@@ -6,11 +6,28 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  */
+#[ApiResource (
+   attributes: ["security" => "is_granted('ROLE_USER')"],
+   collectionOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "post" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+   itemOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "delete" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+   normalizationContext: ['groups' => ['read']],
+   denormalizationContext: ['groups' => ['write']],
+)]
+
 class Order
 {
     /**
@@ -18,31 +35,37 @@ class Order
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    #[Groups(["read", "write"])]
+    private ?int $id;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $date_at;
+    #[Groups(["read", "write"])]
+    private  $date_at;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $username;
+    #[Groups(["read", "write"])]
+    private ?string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $adress;
+    #[Groups(["read", "write"])]
+    private ?string $adress;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $telehhone;
+    #[Groups(["read", "write"])]
+    private ?string $telehhone;
 
     /**
      * @ORM\OneToMany(targetEntity=BasketPosition::class, mappedBy="orderN")
      */
+    #[Groups(["read"])]
     private $basketposition;
 
     /**
@@ -53,7 +76,8 @@ class Order
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $sessionID;
+    #[Groups(["read"])]
+    private ?string $sessionID;
 
     public function __construct()
     {
@@ -146,9 +170,11 @@ class Order
     /**
      * @ORM\PrePersist
      */
-    public function setCreatedAtValue()
+    public function setCreatedAtValue(): self
     {
         $this->date_at = new \DateTimeImmutable();
+
+        return $this;
     }
 
     public function __toString(): string

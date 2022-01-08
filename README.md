@@ -24,3 +24,21 @@ admin/admin
 
 http://localhost/
 
+#the API will be available at
+
+http://localhost/api
+
+#to create jwt token use endpoint
+
+http://localhost/api/login_check
+
+#example for Linux or macOS
+
+curl -X POST -H "Content-Type: application/json" http://localhost/api/login_check -d '{"username":"johndoe","password":"test"}'
+
+#example for Windows
+
+curl -X POST -H "Content-Type: application/json" http://localhost/api/login_check --data {\"username\":\"johndoe\",\"password\":\"test\"}
+
+
+

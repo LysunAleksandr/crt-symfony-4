@@ -6,10 +6,23 @@ use App\Repository\CatalogRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CatalogRepository::class)
  */
+#[ApiResource (
+   collectionOperations: [
+    "get",
+    "post" => ["security" => "is_granted('ROLE_ADMIN')"],
+   ],
+   itemOperations: [
+    "get",
+    "delete" => ["security" => "is_granted('ROLE_ADMIN')"],
+   ],
+   denormalizationContext: ['groups' => ['write']],
+)]
 class Catalog
 {
     /**
@@ -17,32 +30,41 @@ class Catalog
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    #[Assert\NotBlank]
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    #[Assert\NotBlank]
+    #[Groups(["write"])]
+    private ?string $title;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $price;
+    #[Assert\NotBlank]
+    #[Groups(["write"])]
+    private ?float $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(["write"])]
     private $photoFilename;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    #[Groups(["write"])]
+    private ?string $description;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ingridient::class)
      */
-    private $Ingr;
+    #[Groups(["write"])]
+    #[ApiSubresource(maxDepth: 1,)]
+    private  $Ingr;
 
 
 

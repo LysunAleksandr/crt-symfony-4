@@ -6,10 +6,27 @@ use App\Repository\BasketPositionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=BasketPositionRepository::class)
  */
+
+#[ApiResource (
+   attributes: ["security" => "is_granted('ROLE_USER')"],
+   collectionOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "post" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+   itemOperations: [
+    "get" => ["security" => "is_granted('ROLE_USER')"],
+    "delete" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+    denormalizationContext: ['groups' => ['write']],
+)]
+
 class BasketPosition
 {
     /**
@@ -17,42 +34,51 @@ class BasketPosition
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $sessionID;
+    private ?string $sessionID;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    #[Groups(["write"])]
+    private ?string $title;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $quantity;
+    #[Groups(["write"])]
+    private ?int $quantity;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $price;
+    #[Groups(["write"])]
+    private ?float $price;
 
     /**
      * @ORM\ManyToOne(targetEntity=Catalog::class, inversedBy="Ð¸ÑbasketPosition")
      */
-    private $catalog;
+
+    #[ApiSubresource(maxDepth: 1,)]
+    private ?Catalog $catalog;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="basketposition")
      */
-    private $orderN;
+
+    #[ApiSubresource(maxDepth: 1,)]
+    private ?Order $orderN;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ingridient::class)
      */
-    private $Ingr;
+    #[Groups(["write"])]
+    #[ApiSubresource(maxDepth: 1,)]
+    private  $Ingr;
 
     public function __construct()
     {

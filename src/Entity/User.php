@@ -6,11 +6,22 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use ApiPlatform\Core\Annotation\ApiResource;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
+#[ApiResource (
+   attributes: ["security" => "is_granted('ROLE_ADMIN')"],
+   collectionOperations: [
+    "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+    "post" => ["security" => "is_granted('ROLE_ADMIN')"],
+   ],
+   itemOperations: [
+    "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+    "delete" => ["security" => "is_granted('ROLE_ADMIN')"],
+   ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -18,23 +29,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    #[Assert\NotBlank]
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    #[Assert\NotBlank]
+    private ?string $username;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    #[Assert\NotBlank]
+    private ?string $password;
 
     public function getId(): ?int
     {
