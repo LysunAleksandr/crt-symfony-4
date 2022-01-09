@@ -8,7 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass=CatalogRepository::class)
  */
@@ -38,6 +39,7 @@ class Catalog
      */
     #[Assert\NotBlank]
     #[Groups(["write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title;
 
     /**
@@ -45,6 +47,7 @@ class Catalog
      */
     #[Assert\NotBlank]
     #[Groups(["write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?float $price;
 
     /**
@@ -57,6 +60,7 @@ class Catalog
      * @ORM\Column(type="text")
      */
     #[Groups(["write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $description;
 
     /**
