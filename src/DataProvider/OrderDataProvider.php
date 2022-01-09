@@ -33,7 +33,9 @@ class OrderDataProvider implements ContextAwareCollectionDataProviderInterface, 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         try {
-            $this->user = $this->token->getUser()->getUserIdentifier();
+            if ($this->token) {
+                $this->user = $this->token->getUser()->getUserIdentifier();
+            }
             $collection = $this->orderRepository->findBy(['sessionID' => $this->user ]);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Unable to retrieve orders from external source: %s', $e->getMessage()));
