@@ -35,7 +35,9 @@ class BasketPositionDataProvider implements ContextAwareCollectionDataProviderIn
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         try {
-            $this->user = $this->token->getUser()->getUserIdentifier();
+            if ($this->token) {
+                $this->user = $this->token->getUser()->getUserIdentifier();
+             }
             $collection = $this->basketPositionRepository->findBy(['sessionID' => $this->user, 'orderN' => null ]);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Unable to retrieve basket from external source: %s', $e->getMessage()));
