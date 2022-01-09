@@ -10,15 +10,15 @@ docker-compose exec app composer install
 
 #to create a database and tables, run the command 
 
-docker-compose exec app  bin/console doctrine:migrations:migrate
+docker-compose exec app php bin/console doctrine:migrations:migrate
 
 #to download data
 
-docker-compose exec app  bin/console --env=dev doctrine:fixtures:load
+docker-compose exec app php bin/console --env=dev doctrine:fixtures:load
 
 #to Generate the SSL keys:
 
-docker-compose exec app bin/console lexik:jwt:generate-keypair
+docker-compose exec app php bin/console lexik:jwt:generate-keypair
 
 #login admin
 
