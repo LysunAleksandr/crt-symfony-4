@@ -42,24 +42,28 @@ class Order
      * @ORM\Column(type="datetime_immutable")
      */
     #[Groups(["read", "write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private  $date_at;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read", "write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read", "write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $adress;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read", "write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $telehhone;
 
     /**
@@ -77,6 +81,7 @@ class Order
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["read"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $sessionID;
 
     public function __construct()

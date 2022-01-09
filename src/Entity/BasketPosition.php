@@ -45,18 +45,21 @@ class BasketPosition
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(["write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title;
 
     /**
      * @ORM\Column(type="integer")
      */
     #[Groups(["write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?int $quantity;
 
     /**
      * @ORM\Column(type="float")
      */
     #[Groups(["write"])]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?float $price;
 
     /**
