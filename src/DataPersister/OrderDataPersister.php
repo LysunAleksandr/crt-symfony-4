@@ -4,16 +4,10 @@
 namespace App\DataPersister;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use App\Entity\Order;
-use App\Entity\User;
 use App\Exception\BasketPositionNotFoundException;
 use App\Repository\BasketPositionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\String_;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
 
 
 class OrderDataPersister implements DataPersisterInterface
@@ -52,15 +46,17 @@ class OrderDataPersister implements DataPersisterInterface
         }
         else {
             throw new BasketPositionNotFoundException('Basket is empty');
- /*           return new JsonResponse(['id'=>0,
-                                    'sessionid'=> $data->getSessionID(),
-                                    'response'=>'Basket is empty']);
- */
-        }
+         }
     }
 
     public function remove($data)
     {
+        $basketPositions = $data->getBasketposition();
+        if ($basketPositions) {
+            foreach ($basketPositions  as $basketPosition) {
+                $data->removeBasketposition($basketPosition);
+            }
+        }
         $this->entityManager->remove($data);
         $this->entityManager->flush();
     }
