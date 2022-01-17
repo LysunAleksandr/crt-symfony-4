@@ -24,9 +24,6 @@ services:
         tags: [ { name: 'api_platform.collection_data_provider', priority: 2 } ]
         # Autoconfiguration must be disabled to set a custom priority
         autoconfigure: false
-    App\Swagger\JwtDecorator:
-        decorates: 'api_platform.openapi.factory'
-        arguments: ['@.inner']
     App\:
         resource: '../src/'
         exclude:
@@ -40,3 +37,7 @@ services:
         tags:
             - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'App\Entity\Order'}
             - { name: 'doctrine.orm.entity_listener', event: 'preUpdate', entity: 'App\Entity\Order'}
+
+    App\Swagger\JwtDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@.inner']
